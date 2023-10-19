@@ -1,0 +1,57 @@
+name: unittests
+
+on:
+  pull_request:
+    branches:
+      - development*
+      - "*-dev"
+
+  push:
+    branches:
+      - development*
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+
+    container: bsnacks000/python-poetry:3.11-1.3.2
+
+    services:
+      tsdb:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+    env:
+      BEMADB_POSTGRES_USER: postgres
+      BEMADB_POSTGRES_PASSWORD: postgres
+      BEMADB_POSTGRES_HOST: pgdb
+      BEMADB_POSTGRES_PORT: 5432
+      BEMADB_POSTGRES_TEST_DB: testdb
+      BEMADB_POSTGRES_URL: postgresql+asyncpg://postgres:postgres@pgdb:5432/testdb
+      BEMADB_ENVIRONMENT: testing
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run alembic upgrade
+        run: poetry run alembic upgrade head
+
+      - name: Run tests
+        run: poetry run pytest -v -s -m "not live and not liverpc" --cov={{ cookiecutter.project_slug }}/ --cov-report=term-missing
+
+      - name: Run mypy
+        run: poetry run mypy {{ cookiecutter.project_slug }} --python-version 3.11 --strict
+
+      - name: Run alembic downgrade
+        run: poetry run alembic downgrade base
