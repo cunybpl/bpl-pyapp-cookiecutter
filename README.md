@@ -8,6 +8,9 @@ A `cookiecutter` template for generating boiler for python postgres projects.
 __stack__
 * py3.11
 * postgres 15 - dockerized for local dev
+* docker
+* `sqlalchemy`
+* `fastapi`
 
 __libs__
 * `asyncio`/`anyio` runtime enabled 
@@ -19,6 +22,7 @@ __libs__
 * `pydantic` serde and object mapping 
 * `cunybpl/aiodal` - our lightweight asyncpg/sqlalchemy data access layer 
 * `cunybpl/auth0_fastapi` - for auth0 integration
+
 
 ## usage 
 

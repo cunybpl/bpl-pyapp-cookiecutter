@@ -20,21 +20,21 @@ while getopts n:m:h flag; do
     esac 
 done 
 
-POSTGRES_USER=${{ cookiecutter.project_env_prefix }}_POSTGRES_USER
-POSTGRES_PASSWORD=${{ cookiecutter.project_env_prefix }}_POSTGRES_PASSWORD
-POSTGRES_TEST_DB=${{ cookiecutter.project_env_prefix }}_POSTGRES_TEST_DB
-POSTGRES_HOST=${{ cookiecutter.project_env_prefix }}_POSTGRES_HOST 
-POSTGRES_PORT=${{ cookiecutter.project_env_prefix }}_POSTGRES_PORT
+user=${{ cookiecutter.project_env_prefix }}_POSTGRES_USER
+password=${{ cookiecutter.project_env_prefix }}_POSTGRES_PASSWORD
+db=${{ cookiecutter.project_env_prefix }}_POSTGRES_TEST_DB
+host=${{ cookiecutter.project_env_prefix }}_POSTGRES_HOST 
+port=${{ cookiecutter.project_env_prefix }}_POSTGRES_PORT
 
 
 if [[ -v $user || -v $pass || -v $db || -v $host || -v $port ]]; then 
     
     echo "POSTGRES Environment variables not configured."; 
-    echo POSTGRES_USER: $POSTGRES_USER
-    echo POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-    echo POSTGRES_TEST_DB: $POSTGRES_TEST_DB
-    echo POSTGRES_HOST: $POSTGRES_HOST
-    echo POSTGRES_PORT: $POSTGRES_PORT
+    echo POSTGRES_USER: $user
+    echo POSTGRES_PASSWORD: $password
+    echo POSTGRES_TEST_DB: $db
+    echo POSTGRES_HOST: $host
+    echo POSTGRES_PORT: $port
     
     exit 1;
 fi
