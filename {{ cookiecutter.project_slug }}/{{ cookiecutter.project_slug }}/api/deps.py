@@ -42,13 +42,3 @@ async def get_transaction() -> AsyncIterator[dal.TransactionManager]:
             logging.exception(err)
             await transaction.rollback()
             raise HTTPException(status_code=500, detail="An unexpected error occurred.")
-
-
-# TODO something like this for process pool executor
-# async def get_executor() -> AsyncIterator[ProcessPoolExecutor]:
-#     """_summary_
-
-#     Returns:
-#         AsyncIterator[ProcessPoolExecutor]: _description_
-#     """
-#     ...
