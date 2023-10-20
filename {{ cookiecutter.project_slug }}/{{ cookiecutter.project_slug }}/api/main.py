@@ -1,8 +1,3 @@
-# @kuba add
-# - `main` config similar to bemadb
-# - `auth`
-# - `deps`
-
 from .._version import VERSION
 from .. import config
 
