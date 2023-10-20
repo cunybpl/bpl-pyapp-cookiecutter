@@ -3,7 +3,7 @@ version: '3.8'
 services:
   pgdb:
     restart: "no"
-    container_name: "{{ cookiecutter.project_env_prefix }}_pg"
+    container_name: "{{ cookiecutter.project_slug }}_pg"
     image: postgres:15
     environment:
       - POSTGRES_USER=postgres
@@ -21,8 +21,8 @@ services:
 
   app:
     restart: "no"
-    container_name: "{{ cookiecutter.project_env_prefix }}_app"
-    image: {{ cookiecutter.project_env_prefix }}:dev
+    container_name: "{{ cookiecutter.project_slug }}_app"
+    image: {{ cookiecutter.project_slug }}:dev
     environment:
       - WAIT_HOSTS=pgdb:5432
       - {{ cookiecutter.project_env_prefix }}_POSTGRES_USER=postgres
@@ -32,17 +32,17 @@ services:
       - {{ cookiecutter.project_env_prefix }}_POSTGRES_DB={{ cookiecutter.project_slug }}db
       - {{ cookiecutter.project_env_prefix }}_POSTGRES_TEST_DB=testdb
       - {{ cookiecutter.project_env_prefix }}_ENVIRONMENT=local
-      - {{ cookiecutter.project_env_prefix }}_AUTH0_DOMAIN=${'{{ cookiecutter.project_env_prefix }}'_AUTH0_DOMAIN}
-      - {{ cookiecutter.project_env_prefix }}_AUTH0_AUDIENCE=${'{{ cookiecutter.project_env_prefix }}'_AUTH0_AUDIENCE}
-      - {{ cookiecutter.project_env_prefix }}_AUTH0_CLIENT_ID=${'{{ cookiecutter.project_env_prefix }}'_AUTH0_CLIENT_ID}
-      - {{ cookiecutter.project_env_prefix }}_AUTH0_SECRET=${'{{ cookiecutter.project_env_prefix }}'_AUTH0_SECRET}
-      - {{ cookiecutter.project_env_prefix }}_DB_ENGINE_MAX_OVERFLOW=${'{{ cookiecutter.project_env_prefix }}'_DB_ENGINE_MAX_OVERFLOW}
-      - {{ cookiecutter.project_env_prefix }}_DB_ENGINE_POOL_SIZE=${'{{ cookiecutter.project_env_prefix }}'_DB_ENGINE_POOL_SIZE}
-      - {{ cookiecutter.project_env_prefix }}_LIVE_TEST_URL=${'{{ cookiecutter.project_env_prefix }}'_LIVE_TEST_URL}
+      - {{ cookiecutter.project_env_prefix }}_AUTH0_DOMAIN={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_AUTH0_DOMAIN}
+      - {{ cookiecutter.project_env_prefix }}_AUTH0_AUDIENCE={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_AUTH0_AUDIENCE}
+      - {{ cookiecutter.project_env_prefix }}_AUTH0_CLIENT_ID={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_AUTH0_CLIENT_ID}
+      - {{ cookiecutter.project_env_prefix }}_AUTH0_SECRET={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_AUTH0_SECRET}
+      - {{ cookiecutter.project_env_prefix }}_DB_ENGINE_MAX_OVERFLOW={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_DB_ENGINE_MAX_OVERFLOW}
+      - {{ cookiecutter.project_env_prefix }}_DB_ENGINE_POOL_SIZE={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_DB_ENGINE_POOL_SIZE}
+      - {{ cookiecutter.project_env_prefix }}_LIVE_TEST_URL={% raw %}${{% endraw %}{{ cookiecutter.project_env_prefix }}_LIVE_TEST_URL}
     build:
       context: .
       dockerfile: ./Dockerfile
-    command: sh -c "../wait && uvicorn --host 0.0.0.0 --port 8080 --log-level debug --reload {{ cookiecutter.project_env_prefix }}.api.main:app"
+    command: sh -c "../wait && uvicorn --host 0.0.0.0 --port 8080 --log-level debug --reload {{ cookiecutter.project_slug }}.api.main:app"
     volumes:
       - .:/app
     ports:
